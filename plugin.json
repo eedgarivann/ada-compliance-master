@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ada-compliance-master",
+  "version": "1.0.0",
+  "description": "Accessibility auditor and advisor for WCAG 2.2 AA. Audits websites read-only, gives a prioritized plain-language fix plan for any platform, and explains ADA and accessibility law with dated sources. Not legal advice.",
+  "author": {
+    "name": "eedgarivann"
+  },
+  "homepage": "https://github.com/eedgarivann/ada-compliance-master",
+  "repository": "https://github.com/eedgarivann/ada-compliance-master",
+  "license": "MIT",
+  "keywords": [
+    "accessibility",
+    "wcag",
+    "ada",
+    "a11y",
+    "audit",
+    "vpat"
+  ]
+}
