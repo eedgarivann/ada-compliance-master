@@ -2,31 +2,39 @@
 
 [![Validate](https://github.com/eedgarivann/ada-compliance-master/actions/workflows/validate.yml/badge.svg)](https://github.com/eedgarivann/ada-compliance-master/actions/workflows/validate.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A plugin of seven [Agent Skills](https://agentskills.io/specification) for digital accessibility work. It helps you audit websites and web apps against **WCAG 2.2 AA**, write a prioritized plain-language fix plan for any common platform, and explain ADA and related accessibility law with dated, cited sources.
+A plugin of seven [Agent Skills](https://agentskills.io/specification) for digital accessibility work. It reads and tests websites and web apps against **WCAG 2.2 AA** (scripted checks, real NVDA and VoiceOver runs, and an AI judgment pass on meaning), writes a prioritized plain-language fix plan for any common platform, and, with the owner's permission, fixes barriers in source or hands exact fix packets to the owner's own bots. It also explains ADA and related accessibility law with dated, cited sources.
+
+The goal is to get as close to a human accessibility tester as possible, while labelling every method honestly and leaving the final word to people who use assistive technology.
 
 It is meant for site owners, designers, developers, agencies and public bodies. It is not a law firm, and it is not a certification body.
 
 > **Not legal advice. Never a compliance certification.** A clean scan, a high Lighthouse score, or “no failures found in this sample” does not mean a site “conforms” or is “ADA compliant,” and it does not prevent complaints or lawsuits. Law answers are general information with sources and dates; a demand letter, complaint or agency notice is a reason to contact qualified counsel now.
 
-The scripted, read-only audit checks live in a companion repo: **[ada-audit-scripts](https://github.com/eedgarivann/ada-audit-scripts)** (current pin: `v4.2.1`).
+The scripted, read-only audit checks live in a companion repo: **[ada-audit-scripts](https://github.com/eedgarivann/ada-audit-scripts)** (current pin: [`v4.3.0`](https://github.com/eedgarivann/ada-audit-scripts/releases/tag/v4.3.0), which adds real NVDA and VoiceOver runs).
 
 ## Install
 
 Once the plugin is listed, install **ADA Compliance Master** from the plugin marketplace in [Grok Bot](https://x.ai/bot), Grok, or [Cursor](https://cursor.com).
 
-In Cursor you can also add this GitHub repository from **Customize → Plugins**. There are no API keys and no login to configure. Live audits are read-only: the skills never log in, submit, buy or change a production site.
+In Cursor you can also add this GitHub repository from **Customize → Plugins**. There are no API keys and no login to configure. Audits of live sites are read-only. Changes happen only in Fix mode, with the owner's access and explicit approval, on a staging copy first.
 
 ## Skills
 
 | Skill | When to use it |
 |---|---|
-| [ada-compliance-master-core](skills/ada-compliance-master-core/SKILL.md) | Every accessibility conversation: identity, stance, modes, tone and honest limits. |
+| [ada-compliance-master-core](skills/ada-compliance-master-core/SKILL.md) | Every accessibility conversation: identity, stance, modes (including Fix mode), tone and honest limits. |
 | [ada-accessibility-getting-started](skills/ada-accessibility-getting-started/SKILL.md) | The first time someone asks for help: learn the site, journeys, platform, jurisdictions and any legal matter. |
-| [ada-accessibility-audit](skills/ada-accessibility-audit/SKILL.md) | A live or staging site or web app: WCAG-EM scope, journeys, read-only scripted tests, evidence and a priority plan. |
-| [ada-accessibility-deliverables](skills/ada-accessibility-deliverables/SKILL.md) | Reports, accessibility statements, remediation logs, monitoring plans and design handoff cards. |
+| [ada-accessibility-audit](skills/ada-accessibility-audit/SKILL.md) | A live or staging site or web app: WCAG-EM scope, journeys, read-only scripted tests, real screen-reader runs, AI judgment pass, staging-only form-error journeys, evidence and a priority plan. |
+| [ada-accessibility-deliverables](skills/ada-accessibility-deliverables/SKILL.md) | Reports, accessibility statements, remediation logs, monitoring plans, design handoff cards, fix packets and helper-bot setups. |
 | [ada-accessibility-practice](skills/ada-accessibility-practice/SKILL.md) | Design annotation, ACR/VPAT, CI, real screen-reader tests, content/PDF/media, disabled-user testing, platform playbooks. |
 | [ada-accessibility-law](skills/ada-accessibility-law/SKILL.md) | ADA, Section 504/508, Fair Housing, state laws, EAA, AODA, Accessible Canada Act, demand letters — cited and dated, not legal advice. |
 | [wcag22-criteria-test-map](skills/wcag22-criteria-test-map/SKILL.md) | Every WCAG 2.2 A/AA success criterion: what it means, how to test it, and a typical fix. |
+
+## Fix mode
+
+- **With access and approval:** fixes go into the source (theme, repo, CMS) on a staging copy first, then the same checks run again and you get a before/after. Never an overlay.
+- **Hand-off:** each fix becomes a packet (exact change, where it goes, acceptance test) for your own content, design or dev bots, each in its own lane.
+- **No bots yet:** it proposes only the helpers the plan needs (for example a senior web developer, design, content or document helper), each with a brief, a lead and one-editor-at-a-time rules. You approve before any are created.
 
 ## Example prompts
 
@@ -39,8 +47,9 @@ See [TESTING.md](TESTING.md) for what a good answer to each of those looks like.
 
 ## Limits
 
-- Live sites are read-only. Logins, payments and server-side form validation are untested unless you provide a staging copy or an approved test account through a secure channel.
-- Automated checks and simulated screen-reader output find only part of the barriers on a site. Confidence needs real keyboard and screen-reader testing, ideally with disabled users.
+- Live sites are read-only. Logins, payments and form-error handling are tested only on a staging copy or approved test account you provide through a secure channel.
+- Real screen-reader runs are scripted (NVDA + Chromium, VoiceOver + WebKit, English speech only); JAWS, TalkBack and iOS VoiceOver are not covered. AI judgment items carry a confidence level, and low-confidence ones go to human review.
+- Automated checks, scripted screen readers and AI judgment find only part of the barriers on a site. Confidence needs real keyboard and screen-reader testing, ideally with disabled users.
 - Platform lock-in (hosted checkout, locked templates, third-party widgets) is recorded as a dependency, not ignored.
 - Law changes and courts disagree. Volatile facts in the law skill should be re-verified before they are stated.
 
@@ -48,13 +57,13 @@ See [TESTING.md](TESTING.md) for what a good answer to each of those looks like.
 
 ```sh
 npx -y playwright@1.65.1 install chromium       # once
-npx -y github:eedgarivann/ada-audit-scripts#v4.2.1 \
+npx -y github:eedgarivann/ada-audit-scripts#v4.3.0 \
   https://example.org/ https://example.org/contact \
   --journey "Contact=https://example.org/contact" \
   --format json,md,html
 ```
 
-Pin the tag so results are reproducible. Full usage: [ada-audit-scripts](https://github.com/eedgarivann/ada-audit-scripts).
+Real screen readers: `npx ada-audit sr --url <url>` on Windows or macOS, or the *Real screen readers* GitHub workflow in that repo. Pin the tag so results are reproducible. Full usage: [ada-audit-scripts](https://github.com/eedgarivann/ada-audit-scripts).
 
 ## License
 

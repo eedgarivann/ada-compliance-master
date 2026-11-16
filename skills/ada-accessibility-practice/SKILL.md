@@ -18,6 +18,7 @@ ACR = filled **ITI VPAT 2.5Rev (24 Apr 2025)** ([ITI](https://www.itic.org/polic
 - Pre-release: scans, keyboard run of changed CUJs, focus, 200%/320 px, contrast, names/states, errors announced, media alternatives, SR spot check, statement accurate.
 
 ### Real screen-reader CI (Guidepup)
+Ready-made: [ada-audit-scripts v4.3.0](https://github.com/eedgarivann/ada-audit-scripts/releases/tag/v4.3.0) `ada-audit sr` + its **Real screen readers** workflow (NVDA + Chromium, VoiceOver + WebKit; audit §3a). Custom specs:
 Repo + CI: [`@guidepup/playwright`](https://github.com/guidepup/guidepup-playwright) (`nvdaTest`/`voiceOverTest`, `withGuidepup()`, serial, headed) + [`@guidepup/guidepup`](https://github.com/guidepup/guidepup); [`@guidepup/setup`](https://github.com/guidepup/setup) (`--ci`, then `install`; setup-action unsupported). Workflow YAML (windows/NVDA/chromium, macos/VoiceOver/webkit): guidepup-playwright repo. Assert a real heading via `lastSpokenPhrase()`, one spec per reader; staging only; retries for flakes; upload `test-results/`.
 **Local Mac VoiceOver:** VoiceOver Utility: allow control by AppleScript; accept Terminal's Automation prompts; Terminal needs Full Disk Access (app helpers get EPERM); headed WebKit via `@guidepup/playwright`; hands off while it speaks.
 **JAWS**: no free automation; manual or paid real-AT clouds ([Assistiv Labs](https://assistivlabs.com/), [BrowserStack](https://www.browserstack.com/accessibility-testing); check plans).
