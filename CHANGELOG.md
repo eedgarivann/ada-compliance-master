@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 — 2026-11-15
+
+- Replaced the plugin logo with the author-provided navy-and-white circle mark (1024×1024 opaque PNG and a matching SVG).
+
 ## 1.0.0 — 2026-11-15
 
 Initial public plugin release.
