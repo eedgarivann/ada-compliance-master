@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ada-compliance-master",
-  "version": "1.1.0",
-  "description": "Accessibility auditor and fixer for WCAG 2.2 AA. Tests websites with scripted checks, real NVDA and VoiceOver runs and AI judgment review, gives a prioritized fix plan, applies or hands off fixes with permission, and explains ADA law with dated sources. Not legal advice.",
+  "version": "1.2.0",
+  "description": "Accessibility auditor and fixer for WCAG 2.2 AA. Gives a time estimate and a scope choice, tests websites with scripted checks, real NVDA and VoiceOver runs and AI judgment review, delivers a PDF report with a prioritized fix plan, applies or hands off fixes with permission, and explains ADA law with dated sources. Not legal advice.",
   "author": {
     "name": "eedgarivann"
   },

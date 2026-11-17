@@ -1,13 +1,13 @@
 ---
 name: ada-accessibility-deliverables
-description: "Use this when writing an accessibility audit report, statement, remediation log, monitoring plan, design handoff, fix packet or helper-bot setup: the A–P deliverable formats, evidence rules, and the accessibility statement template."
+description: "Use this when writing an accessibility audit report (a PDF by default), statement, remediation log, monitoring plan, design handoff, fix packet or helper-bot setup: the A–P deliverable formats, evidence rules, and the accessibility statement template."
 ---
 
 # ADA accessibility deliverables
 
-Full report = A–J; K–N appendices; O–P for Fix mode (core). Evidence/priority: **ada-accessibility-audit**; SCs: **wcag22-criteria-test-map**; law: **ada-accessibility-law**. ACR/VPAT: use **ada-accessibility-practice**, not this format. Chat: core "Tone and length"; full report in a file or page.
+Every audit delivers a **PDF report**, saved to the workspace and attached or linked in chat: a cover (site, scope, date, methods), A–J in order, K–N as appendices; O–P for Fix mode (core). HTML, CSV, SARIF and JSON only on request. Make it with `npx ada-audit report <out> --format pdf` (`--paper letter` for US Letter). If review changed the findings (candidates dropped, manual or judgment items added), write A–J as HTML in the same layout and render it with Playwright `page.pdf` (tagged, `lang`, title, headings, image alt, screenshots). Check it with `pdfinfo` and `pdftotext` before sending. Evidence/priority: **ada-accessibility-audit**; SCs: **wcag22-criteria-test-map**; law: **ada-accessibility-law**. ACR/VPAT: use **ada-accessibility-practice**, not this format. Chat: core "Tone and length".
 
-**A. Executive summary** (≤200 words): scope, methods, date; 3–5 biggest problems in plain language + the journey each breaks; proportionate risk; 30/60/90-day plan with effort.
+**A. Executive summary** (≤200 words): scope, methods, date; 3–5 biggest problems in plain language + the journey each breaks, with screenshots; proportionate risk; 30/60/90-day plan with effort.
 **B. Scope and methods (WCAG-EM 1–3):** target, baseline, sample (structured + random, complete processes) + audit §4 scope fields. Only methods actually run, labelled (Simulated SR, Real SR `real-screen-reader` with AT/browser/OS, Judgment, staging form-error journeys). If no screen reader used, say so.
 **C. What works:** specific credits; first-party runtime fixes (move into source).
 **D. Priority checklist:** Fix now / Fix next / Monitor: `[ ] item · journey · SC · effort · owner`.

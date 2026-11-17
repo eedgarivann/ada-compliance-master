@@ -4,7 +4,7 @@ No login, API keys, paid accounts or special environment variables are required 
 
 Live-site audits are **read-only**. The plugin must not log in, submit a form, make a purchase or change settings on a production site. Changes happen only in **Fix mode**, with the owner's access and explicit approval, on a staging copy first; form-error testing runs only on staging.
 
-Version 1.1.0 adds real NVDA/VoiceOver runs (scripted, via the companion scripts), an AI judgment pass with confidence levels, staging-only form-error journeys and Fix mode (prompt 5).
+Version 1.1.0 added real NVDA/VoiceOver runs (scripted, via the companion scripts), an AI judgment pass with confidence levels, staging-only form-error journeys and Fix mode (prompt 5). Version 1.2.0 adds a time estimate and scope choice before audits, much shorter chat replies, and a PDF report as the default audit deliverable (prompt 1).
 
 Install the plugin, then run the five prompts below (one at a time is fine). A good answer matches the shape described under each prompt, not a word-for-word script.
 
@@ -22,8 +22,9 @@ This is [W3C’s intentionally inaccessible “Before” demo](https://www.w3.or
 - Labels how each issue was found (automated, manual inspection, keyboard, simulated screen reader, real screen reader, judgment, and so on). Simulated output is labeled simulated; a real NVDA/VoiceOver run (`ada-audit sr` or the *Real screen readers* workflow) is labeled `real-screen-reader` and described as scripted, not user testing. If no real screen reader ran, it says so.
 - Judgment calls on meaning (is the alt text, link text, title or label meaningful?) carry a confidence level; low-confidence ones are listed for human review, not reported as failures.
 - Lists error-message announcement as not tested on a live page (it needs a staging copy).
-- Stays short in chat (top issues on the main journey) and offers a fuller report if asked.
-- May offer to run the companion scripts (`npx -y github:eedgarivann/ada-audit-scripts#v4.3.0`). That is optional for this review; the page can also be audited from the skill text alone.
+- Before testing, gives an estimated time range (saying every site differs) and offers a scope choice (one page, pages you name, or a key-journey sample); for this prompt it may just assume one page.
+- Stays short in chat: a one-line verdict and the top 3 issues, one line each, then "Full report attached (PDF)". When the companion scripts can run, the PDF is `report.pdf` (cover, summary, top issues with screenshots, findings table, fix + effort + check per issue, limits).
+- May offer to run the companion scripts (`npx -y github:eedgarivann/ada-audit-scripts#v4.4.1`). That is optional for this review; the page can also be audited from the skill text alone.
 
 ## 2. A demand letter
 

@@ -10,7 +10,13 @@ It is meant for site owners, designers, developers, agencies and public bodies. 
 
 > **Not legal advice. Never a compliance certification.** A clean scan, a high Lighthouse score, or “no failures found in this sample” does not mean a site “conforms” or is “ADA compliant,” and it does not prevent complaints or lawsuits. Law answers are general information with sources and dates; a demand letter, complaint or agency notice is a reason to contact qualified counsel now.
 
-The scripted, read-only audit checks live in a companion repo: **[ada-audit-scripts](https://github.com/eedgarivann/ada-audit-scripts)** (current pin: [`v4.3.0`](https://github.com/eedgarivann/ada-audit-scripts/releases/tag/v4.3.0), which adds real NVDA and VoiceOver runs).
+The scripted, read-only audit checks live in a companion repo: **[ada-audit-scripts](https://github.com/eedgarivann/ada-audit-scripts)** (current pin: [`v4.4.1`](https://github.com/eedgarivann/ada-audit-scripts/releases/tag/v4.4.1), which adds the PDF report on top of real NVDA and VoiceOver runs).
+
+## What a user sees
+
+1. A 2–3 sentence intro and one question.
+2. A quick read-only probe of the site, then a choice of scope, each with an estimated time: one page (~5–10 min), pages they name (~5 min + 2–3 min each), or a key journey or representative sample (3–6 pages ~15–30 min, 10–25 pages ~30–60+ min). Estimates come from measured script runs plus review time; every site differs.
+3. In chat, a one-line verdict and the top 3 issues, one line each. Everything else is in the attached **PDF report**: cover with site, scope, date and methods, plain-language summary, top issues with screenshots, prioritized findings table, fix + effort + check for each issue, and limits.
 
 ## Install
 
@@ -23,9 +29,9 @@ In Cursor you can also add this GitHub repository from **Customize → Plugins**
 | Skill | When to use it |
 |---|---|
 | [ada-compliance-master-core](skills/ada-compliance-master-core/SKILL.md) | Every accessibility conversation: identity, stance, modes (including Fix mode), tone and honest limits. |
-| [ada-accessibility-getting-started](skills/ada-accessibility-getting-started/SKILL.md) | The first time someone asks for help: learn the site, journeys, platform, jurisdictions and any legal matter. |
+| [ada-accessibility-getting-started](skills/ada-accessibility-getting-started/SKILL.md) | The first time someone asks for help: a short intro and one question, a quick site probe, then a scope choice (one page, named pages or a key-journey sample) with time estimates. |
 | [ada-accessibility-audit](skills/ada-accessibility-audit/SKILL.md) | A live or staging site or web app: WCAG-EM scope, journeys, read-only scripted tests, real screen-reader runs, AI judgment pass, staging-only form-error journeys, evidence and a priority plan. |
-| [ada-accessibility-deliverables](skills/ada-accessibility-deliverables/SKILL.md) | Reports, accessibility statements, remediation logs, monitoring plans, design handoff cards, fix packets and helper-bot setups. |
+| [ada-accessibility-deliverables](skills/ada-accessibility-deliverables/SKILL.md) | PDF audit reports (default), accessibility statements, remediation logs, monitoring plans, design handoff cards, fix packets and helper-bot setups. |
 | [ada-accessibility-practice](skills/ada-accessibility-practice/SKILL.md) | Design annotation, ACR/VPAT, CI, real screen-reader tests, content/PDF/media, disabled-user testing, platform playbooks. |
 | [ada-accessibility-law](skills/ada-accessibility-law/SKILL.md) | ADA, Section 504/508, Fair Housing, state laws, EAA, AODA, Accessible Canada Act, demand letters — cited and dated, not legal advice. |
 | [wcag22-criteria-test-map](skills/wcag22-criteria-test-map/SKILL.md) | Every WCAG 2.2 A/AA success criterion: what it means, how to test it, and a typical fix. |
@@ -57,10 +63,10 @@ See [TESTING.md](TESTING.md) for what a good answer to each of those looks like.
 
 ```sh
 npx -y playwright@1.65.1 install chromium       # once
-npx -y github:eedgarivann/ada-audit-scripts#v4.3.0 \
+npx -y github:eedgarivann/ada-audit-scripts#v4.4.1 \
   https://example.org/ https://example.org/contact \
   --journey "Contact=https://example.org/contact" \
-  --format json,md,html
+  --format json,md,html,pdf        # report.pdf is the client-ready report
 ```
 
 Real screen readers: `npx ada-audit sr --url <url>` on Windows or macOS, or the *Real screen readers* GitHub workflow in that repo. Pin the tag so results are reproducible. Full usage: [ada-audit-scripts](https://github.com/eedgarivann/ada-audit-scripts).

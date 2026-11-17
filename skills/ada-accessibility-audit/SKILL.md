@@ -1,6 +1,6 @@
 ---
 name: ada-accessibility-audit
-description: "Use this when auditing a live or staging website or web app for accessibility (WCAG 2.2 AA, ADA): WCAG-EM scope and sampling, journey mapping, read-only scripted tests, real NVDA/VoiceOver runs, AI judgment pass, staging-only form-error journeys, evidence standard, severity ladder, platform fixes and vendor risk."
+description: "Use this when auditing a live or staging website or web app for accessibility (WCAG 2.2 AA, ADA): WCAG-EM scope and sampling, journey mapping, read-only scripted tests, real NVDA/VoiceOver runs, AI judgment pass, staging-only form-error journeys, time estimate and scope choice, PDF report, evidence standard, severity ladder, platform fixes and vendor risk."
 ---
 
 # ADA accessibility audit
@@ -23,13 +23,21 @@ Note business type, audience, jurisdictions, physical locations. Pick 3–6 CUJs
 - E-commerce: search → product (variants, quick-add, drawer) → checkout → payment → confirmation → returns. Hospitality: menu (PDF/image menus often fail), hours, order, reserve.
 - Services/health: booking, intake, portal, bill pay, telehealth. SaaS: signup → auth (MFA/CAPTCHA) → onboarding → core task → billing.
 - Nonprofit/public: donate, membership, events, volunteer, applications, housing inquiry, PDFs, meeting video. Portfolio: nav, work, contact.
-Confirm in one message (else write "assumed"). List third parties per journey (payment, booking, chat, maps, video, cookies, CAPTCHA, embeds). No site access → findings limited to what was provided.
+Confirm in the scope question (else write "assumed"). List third parties per journey (payment, booking, chat, maps, video, cookies, CAPTCHA, embeds). No site access → findings limited to what was provided.
+
+## 1a. Estimate and scope (before any run)
+Probe first (≤1 min, read-only): page count from the sitemap or `inventory --site`, platform, home-page weight and request count. Then one multiple-choice question (the host's question tool, such as Cursor's AskQuestion, when available), each option with a time range:
+- **One page:** ~5–10 min.
+- **Pages you name:** ~5 min + 2–3 min per page.
+- **Key journey or representative sample** (WCAG-EM): 3–6 pages ~15–30 min; 10–25 pages ~30–60+ min.
+- Real screen-reader runs or staging form journeys: +15–30 min.
+Say these are estimates from measured runs (the scripts take ~35 s for one live page, ~3 min for 4 pages and ~7 min for a 6-page WordPress site, plus confirming, the judgment pass and the PDF) and that every site differs: heavy pages, many forms, bot checks and slow hosts take longer. If the run goes past the range, tell the user once, with a new estimate.
 
 ## 2. Read-only (live sites)
 Never log in, submit, buy, post or change settings (only exception: core rule 3); opening menus/dialogs/tabs is fine. All scripts use `safePage` (never remove it). Don't follow acting GET links (logout, unsubscribe, add-to-cart). Server-validated forms (common plugins or hosted checkout): `forms.mjs --try-empty-submit` detects it; then error handling = "not tested" unless the staging form-error journeys (§3c) ran.
 
 ## 3. Checks
-`scripts/` beside this skill, else `npx -y github:eedgarivann/ada-audit-scripts#v4.3.0` (or clone; `npm ci`) after `npx -y playwright@1.65.1 install chromium`; if neither, build per appendix. Default: `npx ada-audit -c cfg.json` (sample, `--journey "Name=url,…"`, `--journeys --goal`, `--platform`, `--format json,md,html,sarif,csv`) runs 1–3, 6–8 in parallel on one read-only browser → `findings.json` (deduped, scored, fix steps) + report; then add states (`--click "<sel>;…"`), focus-state, menu-modal and confirm every candidate.
+`scripts/` beside this skill, else `npx -y github:eedgarivann/ada-audit-scripts#v4.4.1` (or clone; `npm ci`) after `npx -y playwright@1.65.1 install chromium`; if neither, build per appendix. Default: `npx ada-audit -c cfg.json` (sample, `--journey "Name=url,…"`, `--journeys --goal`, `--platform`, `--format`, default `json,md,html,pdf`) runs 1–3, 6–8 in parallel on one read-only browser → `findings.json` (deduped, scored, fix steps) + `report.pdf` and other reports; then add states (`--click "<sel>;…"`), focus-state, menu-modal and confirm every candidate.
 1. `inventory --site <origin>`: every published page is in scope; flag demo/placeholder pages, leftovers, overlays.
 2. `axe-scan` at 390 + 1440 px and key states (menu, dialog, error, cart, calendar); record version.
 3. `tab-walk` per CUJ page, both widths, then `--shift`.
@@ -71,7 +79,7 @@ Finding = ID, journey, location (URL + selector/label), SC, how found, observati
 Each fix names where on platform (theme file, CMS field, plugin/vendor setting, component prop); use practice playbooks + current docs. If platform blocks a fix: staffed phone/email workaround and a logged dependency. For CUJ third parties, request ACRs, judge per practice, log gaps. Write up per deliverables; legal context from law skill (re-verify volatile facts).
 
 ## Appendix: build scripts if `scripts/` is missing
-Don't audit without them; first try `npx -y github:eedgarivann/ada-audit-scripts#v4.3.0`. Node 20+, ESM `.mjs`. `package.json`: `ada-audit-scripts` 4.3.0, MIT, `"type":"module"`, engines node >=20; pin `playwright` 1.65.1, `axe-core` 4.14.0, `@axe-core/playwright` 4.14.0, `@guidepup/virtual-screen-reader` 0.33.0, `@guidepup/guidepup` 0.40.0 (real SR, §3a; not rebuilt here); lockfile; `npx playwright install chromium`; record versions. Flags: `--out` (./audit-output), `--channel chrome`, `--click` (refuse submit controls), `--urls` file (`#` line comments; keep URL fragments) or comma list. Outputs are candidates.
+Don't audit without them; first try `npx -y github:eedgarivann/ada-audit-scripts#v4.4.1`. Node 20+, ESM `.mjs`. `package.json`: `ada-audit-scripts` 4.4.1, MIT, `"type":"module"`, engines node >=20; pin `playwright` 1.65.1, `axe-core` 4.14.0, `@axe-core/playwright` 4.14.0, `@guidepup/virtual-screen-reader` 0.33.0, `@guidepup/guidepup` 0.40.0 (real SR, §3a; not rebuilt here); lockfile; `npx playwright install chromium`; record versions. Flags: `--out` (./audit-output), `--channel chrome`, `--click` (refuse submit controls), `--urls` file (`#` line comments; keep URL fragments) or comma list. Outputs are candidates.
 - **lib.mjs:** viewports 390×844, 1440×900; `open` (networkidle, 90 s, settle 1.5 s), `scrollThrough`, WCAG `contrast` (ignores alpha), `DESCRIBE_FOCUS`. **safePage:** context `serviceWorkers:'block'`; route `**/*` on context (incl. popups); abort every method except GET/HEAD/OPTIONS (incl. form submits); log `"METHOD url"` to `page.blockedWrites`; never continue them. `--click` prep skips missing selectors and refuses `type=submit`/typeless form buttons and Enter in fields (GET forms pass method rule). DESCRIBE_FOCUS: role, name, ring (outline/box-shadow/NONE), fg/bg, inView, 5-point coverage (centre + inset corners; ignore focus's ancestors/descendants, transparent empty overlays, same-href twins): 5/5 = 2.4.11 candidate, else 2.4.12 AAA.
 - **axe-scan:** `--widths 390,1440`; tags `wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa,best-practice`; JSON per URL/width, viewport shot, `summary.tsv`, axe version.
 - **tab-walk:** `--width`, `--max 60`, `--settle 1000`, `--shift`; flags `NO-RING?`, `COVERED(entire?)`, `PARTLY-COVERED(n/5)`, `OFFSCREEN`, `TEXT n:1` (<4.5), `REPEAT(trap?)` (3+; halt at 10), `FOCUS-LOST` (focus to body before last tabbable; blur script, F55); crops. `NO-RING?` misses rings on an ancestor/`::after`; `COVERED` counts translucent headers: check crop.
